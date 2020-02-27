@@ -11,7 +11,48 @@ import torch
 from fairseq import search
 from fairseq.sequence_generator import SequenceGenerator
 
+
 import tests.utils as test_utils
+
+
+class TestBart(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.model = torch.hub.load('pytorch/fairseq', 'bart.large.cnn')
+        return cls
+
+    def test_bart_generation(self):
+        bart = self.model
+        bart.eval()
+        text = ' (CNN)The Palestinian Authority officially became the 123rd member of the International Criminal Court on Wednesday, a step that gives the court jurisdiction over alleged crimes in Palestinian'
+        tokens = bart.encode(text).unsqueeze(0)
+        gen_default = bart.generate(tokens, max_len_b=20, beam=4)
+        gen_text = [bart.decode(g['tokens']) for g in gen_default]
+        tokens = [g['tokens'] for g in gen_default]
+        print(tokens)
+        print(gen_text)
+
+    def test_cnn_generation(self):
+        bart = self.model
+        SOURCE = '/Users/shleifer/fairseq/cnn_dm/test.source'
+        OUTPUT = 'cnn_test_output.hypo'
+        bsz = 2
+        count = 1
+        with open(SOURCE) as source, open(OUTPUT, 'w') as fout:
+            sline = source.readline().strip()
+            slines = [sline]
+            for sline in source:
+                if count % bsz == 0:
+                    with torch.no_grad():
+                        hypotheses_batch = bart.sample(slines, beam=4,
+                                                       lenpen=2.0, max_len_b=140,
+                                                       min_len=55, no_repeat_ngram_size=3)
+                    break
+                slines.append(' ' + sline.rstrip())
+                count += 1
+            print(hypotheses_batch)
+
 
 
 class TestSequenceGeneratorBase(unittest.TestCase):
