@@ -47,7 +47,6 @@ class TestBart(unittest.TestCase):
     def test_bart_batch(self):
 
         bart = self.model
-        tokens = bart.encode(self.lns).to(DEFAULT_DEVICE)
         bart.reset_logs()
         with torch.no_grad():
             bart.extract_features(self.ids)
