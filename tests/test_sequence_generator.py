@@ -47,7 +47,7 @@ class TestBart(unittest.TestCase):
         with torch.no_grad():
             bart.extract_features(tokens)
         log_df = bart.combine_logs()
-        log_df.to_csv('fairseq_batch_logs.csv')
+        log_df.to_csv('fairseq_batch_fwd_logs.csv')
 
     def test_bart_gen_batch(self):
 
