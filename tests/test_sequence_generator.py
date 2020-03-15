@@ -41,14 +41,18 @@ class TestBart(unittest.TestCase):
         text = ' (CNN)The Palestinian Authority officially became the 123rd member of the International Criminal Court on Wednesday, a step that gives the court jurisdiction over alleged crimes in Palestinian'
         tokens = bart.encode(text).unsqueeze(0).to(DEFAULT_DEVICE)
         bart.reset_logs()
+        with self.assertRaises(Exception):
+            bart.combine_logs()
         feat = bart.extract_features(tokens)
+        bart.log_mem('done')
         log_df = bart.combine_logs()
         log_df.to_csv('fairseq_extract_logs.csv')
 
     def test_bart_generation(self):
         bart = self.model
         bart.reset_logs()
-        bart.eval()
+        with self.assertRaises(Exception):
+            bart.combine_logs()
         text = ' (CNN)The Palestinian Authority officially became the 123rd member of the International Criminal Court on Wednesday, a step that gives the court jurisdiction over alleged crimes in Palestinian'
         #tokens = bart.encode(text).unsqueeze(0).to(DEFAULT_DEVICE)
         #gen_default = bart.generate(tokens, max_len_b=20, beam=4)
@@ -56,6 +60,7 @@ class TestBart(unittest.TestCase):
         #gen_text = [bart.decode(g['tokens']) for g in gen_default]
         gen_text = bart.sample([text], beam=4, lenpen=2.0, max_len_b=5, min_len=4,
                                        no_repeat_ngram_size=3)
+        bart.log_mem('done')
         print(gen_text)
         log_df = bart.combine_logs()
         log_df.to_csv('fairseq_generate_logs.csv')
