@@ -12,7 +12,7 @@ from fairseq.data import data_utils
 from fairseq.models import FairseqIncrementalDecoder
 
 from durbango.logging_utils import LoggingMixin
-class SequenceGenerator(object, LoggingMixin):
+class SequenceGenerator(LoggingMixin):
     def __init__(
         self,
         tgt_dict,
