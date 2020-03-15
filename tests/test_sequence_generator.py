@@ -32,13 +32,15 @@ class TestBart(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        tokenizer = BartTokenizer.from_pretrained('bart-large')
-        dct = tokenizer.batch_encode_plus(lns, max_length=1024, return_tensors="pt", pad_to_max_length=True)
-        cls.ids = dct['input_ids'].to(DEFAULT_DEVICE)
-        cls.model = torch.hub.load('pytorch/fairseq', 'bart.large.cnn').eval().to(DEFAULT_DEVICE)
         source_path = "/home/shleifer/transformers_fork/notebooks/test.source"
         if os.path.exists(source_path):
             cls.lns = [" " + x.rstrip() for x in open(source_path).readlines()][:8]
+        tokenizer = BartTokenizer.from_pretrained('bart-large')
+        dct = tokenizer.batch_encode_plus(cls.lns, max_length=1024, return_tensors="pt", pad_to_max_length=True)
+        cls.ids = dct['input_ids'].to(DEFAULT_DEVICE)
+        cls.model = torch.hub.load('pytorch/fairseq', 'bart.large.cnn').eval().to(DEFAULT_DEVICE)
+
+
         #cls.lns = pickle_load('/Users/shleifer/transformers_fork/lns.pkl')
         return cls
 
