@@ -45,7 +45,7 @@ class TestBart(unittest.TestCase):
         print(tokens)
         print(gen_text)
         log_df = bart.combine_logs()
-            log_df.to_csv('last_test_run_logs.csv')
+        log_df.to_csv('last_test_run_logs.csv')
 
     def test_cnn_generation(self):
         bart = self.model
