@@ -41,11 +41,12 @@ class TestBart(unittest.TestCase):
         bart.reset_logs()
         bart.eval()
         text = ' (CNN)The Palestinian Authority officially became the 123rd member of the International Criminal Court on Wednesday, a step that gives the court jurisdiction over alleged crimes in Palestinian'
-        tokens = bart.encode(text).unsqueeze(0).to(DEFAULT_DEVICE)
-        gen_default = bart.generate(tokens, max_len_b=20, beam=4)
-        gen_text = [bart.decode(g['tokens']) for g in gen_default]
-        tokens = [g['tokens'] for g in gen_default]
-        print(tokens)
+        #tokens = bart.encode(text).unsqueeze(0).to(DEFAULT_DEVICE)
+        #gen_default = bart.generate(tokens, max_len_b=20, beam=4)
+        
+        #gen_text = [bart.decode(g['tokens']) for g in gen_default]
+        gen_text = bart.sample([text], beam=4, lenpen=2.0, max_len_b=5, min_len=4,
+                                       no_repeat_ngram_size=3)
         print(gen_text)
         log_df = bart.combine_logs()
         log_df.to_csv('fairseq_generate_logs.csv')
