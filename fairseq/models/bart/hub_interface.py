@@ -16,11 +16,12 @@ from typing import List
 from fairseq import utils
 from fairseq.data import encoders
 
+from durbango.logging_utils import LoggingMixin
 
 logger = logging.getLogger(__name__)
 
 
-class BARTHubInterface(nn.Module):
+class BARTHubInterface(nn.Module, LoggingMixin):
     """A simple PyTorch Hub interface to BART.
 
     Usage: https://github.com/pytorch/fairseq/tree/master/examples/BART
