@@ -11,9 +11,9 @@ import torch.nn.functional as F
 from fairseq import utils
 from fairseq.modules import LayerNorm, MultiheadAttention
 from torch import Tensor
+from durbango.logging_utils import LoggingMixin
 
-
-class TransformerEncoderLayer(nn.Module):
+class TransformerEncoderLayer(nn.Module, LoggingMixin):
     """Encoder layer block.
 
     In the original paper each operation (multi-head attention or FFN) is
@@ -118,7 +118,7 @@ class TransformerEncoderLayer(nn.Module):
         return x
 
 
-class TransformerDecoderLayer(nn.Module):
+class TransformerDecoderLayer(nn.Module, LoggingMixin):
     """Decoder layer block.
 
     In the original paper each operation (multi-head attention, encoder

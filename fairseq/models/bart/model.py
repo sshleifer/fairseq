@@ -23,10 +23,10 @@ from .hub_interface import BARTHubInterface
 
 
 logger = logging.getLogger(__name__)
-
+from durbango.logging_utils import LoggingMixin
 
 @register_model('bart')
-class BARTModel(TransformerModel):
+class BARTModel(TransformerModel, LoggingMixin):
 
     @classmethod
     def hub_models(cls):
@@ -68,18 +68,20 @@ class BARTModel(TransformerModel):
     ):
         if classification_head_name is not None:
             features_only = True
-
+        self.log_mem('BartModel: before encoder')
         encoder_out = self.encoder(
             src_tokens,
             src_lengths=src_lengths,
             **kwargs,
         )
+        self.log_mem('BartModel: after encoder')
         x, extra = self.decoder(
             prev_output_tokens,
             encoder_out=encoder_out,
             features_only=features_only,
             **kwargs,
         )
+        self.log_mem('BartModel: after decoder')
 
         if classification_head_name is not None:
             sentence_representation = x[

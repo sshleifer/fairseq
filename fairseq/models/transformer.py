@@ -33,8 +33,9 @@ DEFAULT_MAX_SOURCE_POSITIONS = 1024
 DEFAULT_MAX_TARGET_POSITIONS = 1024
 
 
+from durbango.logging_utils import LoggingMixin
 @register_model("transformer")
-class TransformerModel(FairseqEncoderDecoderModel):
+class TransformerModel(FairseqEncoderDecoderModel, LoggingMixin):
     """
     Transformer model from `"Attention Is All You Need" (Vaswani, et al, 2017)
     <https://arxiv.org/abs/1706.03762>`_.
@@ -354,8 +355,9 @@ class TransformerAlignModel(TransformerModel):
 
         return decoder_out
 
+from durbango.logging_utils import LoggingMixin
 
-class TransformerEncoder(FairseqEncoder):
+class TransformerEncoder(FairseqEncoder, LoggingMixin):
     """
     Transformer encoder consisting of *args.encoder_layers* layers. Each layer
     is a :class:`TransformerEncoderLayer`.
@@ -571,7 +573,7 @@ class TransformerEncoder(FairseqEncoder):
         return state_dict
 
 
-class TransformerDecoder(FairseqIncrementalDecoder):
+class TransformerDecoder(FairseqIncrementalDecoder, LoggingMixin):
     """
     Transformer decoder consisting of *args.decoder_layers* layers. Each layer
     is a :class:`TransformerDecoderLayer`.

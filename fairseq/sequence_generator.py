@@ -11,8 +11,8 @@ from fairseq import search, utils
 from fairseq.data import data_utils
 from fairseq.models import FairseqIncrementalDecoder
 
-
-class SequenceGenerator(object):
+from durbango.logging_utils import LoggingMixin
+class SequenceGenerator(object, LoggingMixin):
     def __init__(
         self,
         tgt_dict,

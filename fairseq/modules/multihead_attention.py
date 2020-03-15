@@ -13,9 +13,9 @@ from torch import Tensor, nn
 from torch.nn import Parameter
 from fairseq.incremental_decoding_utils import with_incremental_state
 
-
+from durbango.logging_utils import LoggingMixin
 @with_incremental_state
-class MultiheadAttention(nn.Module):
+class MultiheadAttention(nn.Module, LoggingMixin):
     """Multi-headed attention.
 
     See "Attention Is All You Need" for more details.
@@ -185,15 +185,19 @@ class MultiheadAttention(nn.Module):
             q = self.q_proj(query)
             k = self.k_proj(query)
             v = self.v_proj(query)
+            self.log_mem('SelfAttn: done with q,k,v proj')
         elif self.encoder_decoder_attention:
             # encoder-decoder attention
             q = self.q_proj(query)
+            self.log_mem('encoderAttn: done with q proj')
             if key is None:
                 assert value is None
                 k = v = None
+                self.log_mem('encoderAttn: k,v are cached')
             else:
                 k = self.k_proj(key)
                 v = self.v_proj(key)
+                self.log_mem('encoderAttn: done k,v proj')
 
         else:
             assert key is not None and value is not None
@@ -236,7 +240,7 @@ class MultiheadAttention(nn.Module):
                 .view(-1, bsz * self.num_heads, self.head_dim)
                 .transpose(0, 1)
             )
-
+        self.log_mem('done reshaping')
         if saved_state is not None:
             # saved states are stored with shape (bsz, num_heads, seq_len, head_dim)
             if "prev_key" in saved_state:
@@ -308,7 +312,10 @@ class MultiheadAttention(nn.Module):
                 )
 
         attn_weights = torch.bmm(q, k.transpose(1, 2))
+        self.log_mem('bart_attn: pre apply_sparse_mask')
         attn_weights = MultiheadAttention.apply_sparse_mask(attn_weights, tgt_len, src_len, bsz)
+        self.log_mem('bart_attn: apply_sparse_mask')
+
 
         assert list(attn_weights.size()) == [bsz * self.num_heads, tgt_len, src_len]
 
@@ -320,11 +327,16 @@ class MultiheadAttention(nn.Module):
 
         if key_padding_mask is not None:
             # don't attend to padding symbols
+            self.log_mem('bart_attn: using key_padding_mask')
             attn_weights = attn_weights.view(bsz, self.num_heads, tgt_len, src_len)
+            self.log_mem('\tbart_attn: done view')
             attn_weights = attn_weights.masked_fill(
                 key_padding_mask.unsqueeze(1).unsqueeze(2).to(torch.bool), float("-inf")
             )
+            self.log_mem('\tbart_attn: done masked fill')
             attn_weights = attn_weights.view(bsz * self.num_heads, tgt_len, src_len)
+            self.log_mem('\tbart_attn: done view')
+
 
         if before_softmax:
             return attn_weights, v
@@ -332,6 +344,7 @@ class MultiheadAttention(nn.Module):
         attn_weights_float = utils.softmax(
             attn_weights, dim=-1, onnx_trace=self.onnx_trace
         )
+        self.log_mem('\tbart_attn: done softmax')
         attn_weights = attn_weights_float.type_as(attn_weights)
         attn_probs = F.dropout(
             attn_weights_float.type_as(attn_weights),
@@ -340,6 +353,7 @@ class MultiheadAttention(nn.Module):
         )
         assert v is not None
         attn = torch.bmm(attn_probs, v)
+        self.log_mem('\tbart_attn: done probs @v bmm')
         assert list(attn.size()) == [bsz * self.num_heads, tgt_len, self.head_dim]
         if self.onnx_trace and attn.size(1) == 1:
             # when ONNX tracing a single decoder step (sequence length == 1)
@@ -348,6 +362,7 @@ class MultiheadAttention(nn.Module):
         else:
             attn = attn.transpose(0, 1).contiguous().view(tgt_len, bsz, embed_dim)
         attn = self.out_proj(attn)
+        self.log_mem('\tbart_attn: done out_proj')
         attn_weights: Optional[Tensor] = None
         if need_weights:
             attn_weights = attn_weights_float.view(

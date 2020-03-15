@@ -10,8 +10,8 @@ import torch
 from fairseq import metrics, search, tokenizer, utils
 from fairseq.data import data_utils, FairseqDataset, iterators, Dictionary
 
-
-class FairseqTask(object):
+from durbango.logging_utils import LoggingMixin
+class FairseqTask(object, LoggingMixin):
     """
     Tasks store dictionaries and provide helpers for loading/iterating over
     Datasets, initializing the Model/Criterion and calculating the loss.
