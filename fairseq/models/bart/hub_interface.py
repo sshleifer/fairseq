@@ -110,8 +110,6 @@ class BARTHubInterface(nn.Module, LoggingMixin):
 
     def generate(self, tokens: List[torch.LongTensor], beam: int = 5, verbose: bool = False, **kwargs) -> torch.LongTensor:
         sample = self._build_sample(tokens)
-        self.log_mem('built_sample')
-
         # build generator using current args as well as any kwargs
         gen_args = copy.copy(self.args)
         gen_args.beam = beam
