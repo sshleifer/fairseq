@@ -35,7 +35,16 @@ class TestBart(unittest.TestCase):
         cls.model = torch.hub.load('pytorch/fairseq', 'bart.large.cnn').eval().to(DEFAULT_DEVICE)
         #cls.lns = pickle_load('/Users/shleifer/transformers_fork/lns.pkl')
         return cls
-    
+
+    def test_bart_batch(self):
+        source_path = "/home/shleifer/transformers_fork/notebooks/test.source"
+        lns = [" " + x.rstrip() for x in open(source_path).readlines()][:8]
+        bart = self.model
+        bart.reset_logs()
+        bart.sample(lns, beam=4, lenpen=2.0, max_len_b=140, min_len=55, no_repeat_ngram_size=3)
+        log_df = bart.combine_logs()
+        log_df.to_csv('fairseq_batch_logs.csv')
+
     def test_bart_extract_features(self):
         bart = self.model
         text = ' (CNN)The Palestinian Authority officially became the 123rd member of the International Criminal Court on Wednesday, a step that gives the court jurisdiction over alleged crimes in Palestinian'
