@@ -142,7 +142,7 @@ class BARTHubInterface(nn.Module, LoggingMixin):
             raise ValueError('tokens exceeds maximum length: {} > {}'.format(
                 tokens.size(-1), self.model.max_positions()
             ))
-        tokens.to(device=self.device),
+        tokens.to(device=self.device)
         prev_output_tokens = tokens.clone()
 
         prev_output_tokens[:, 0] = tokens.gather(
