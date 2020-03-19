@@ -33,6 +33,7 @@ class Memtest(unittest.TestCase):
         r1 = LoggingMixin.collect_log_data(verbose=True)
         torch.cuda.empty_cache()
 
+#class MixedInterface()
 
 class TestHface(Memtest):
 
@@ -93,9 +94,7 @@ class TestFairseq(Memtest):
         save_logs_print_mem(bart, 'fairseq_fwd_batch.txt')
 
     def test_fairseq_gen_batch(self):
-
         bart = self.model
-        bart.reset_logs()
         bart.sample(self.lns, beam=4, lenpen=2.0, max_len_b=140, min_len=55, no_repeat_ngram_size=3)
         save_logs_print_mem(bart, 'fairseq_generate_batch.txt')
 
