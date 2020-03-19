@@ -19,6 +19,7 @@ SAVE_PREFIX =  os.getenv('SAVE_PATH', 'utest_')
 
 
 def save_logs_print_mem(bart, save_path):
+    print(f'*** {save_path} ***')
     try:
         bart.save_logs(SAVE_PREFIX + save_path)
         print(bart.summary)
@@ -97,9 +98,6 @@ class TestFairseq(Memtest):
         bart.reset_logs()
         bart.sample(self.lns, beam=4, lenpen=2.0, max_len_b=140, min_len=55, no_repeat_ngram_size=3)
         save_logs_print_mem(bart, 'fairseq_generate_batch.txt')
-        log_df = bart.combine_logs()
-        log_df.to_csv('fairseq_batch_logs.csv')
-
 
     @unittest.skipUnless(False, 'redundant')
     def test_fairseq_generation(self):
