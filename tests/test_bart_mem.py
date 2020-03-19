@@ -38,20 +38,19 @@ class TestHface(unittest.TestCase):
         cls.prev_output_tokens = shift_tokens_right(cls.ids, 1).to(DEFAULT_DEVICE)
         cls.model = BartForConditionalGeneration.from_pretrained('bart-large-cnn').to(DEFAULT_DEVICE)
         return cls
-
-    def test_hf_fwd_batch(self):
+    def setUp(self):
         if hasattr(self.model, 'reset_logs'): self.model.reset_logs()
         r1 = LoggingMixin.collect_log_data(verbose=True)
-        bart = self.model
-        if hasattr(bart, 'reset_logs'):
-            bart.reset_logs()
+        torch.cuda.empty_cache()
 
+    def test_hf_fwd_batch(self):
+
+        bart = self.model
         with torch.no_grad():
             bart(self.ids)
         save_logs_print_mem(bart, 'hf_fwd_batch.txt')
 
     def test_hf_masked_fwd_batch(self):
-        if hasattr(self.model, 'reset_logs'): self.model.reset_logs()
         bart = self.model
         with torch.no_grad():
             bart(self.ids, attention_mask=self.enc_mask)
@@ -59,8 +58,11 @@ class TestHface(unittest.TestCase):
 
     def test_hf_masked_generate(self):
         self.model.generate(self.ids, attention_mask=self.enc_mask, num_beams=4, max_length=140, min_length=56,
-
+                            no_repeat_ngram_size=3,
+                            early_stopping=True,
+                            decoder_start_token_id=2,
                             )
+        save_logs_print_mem(self.model, 'hf_generate_masked_batch.txt')
 
 
 class TestFairseq(unittest.TestCase):
