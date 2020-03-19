@@ -31,13 +31,17 @@ class TestHface(unittest.TestCase):
 
     def test_hf_fwd_batch(self):
         bart = self.model
-        bart.reset_logs()
+        #bart.reset_logs()
         with torch.no_grad():
-            bart.model(self.ids, None, self.prev_output_tokens)
-        log_df = bart.combine_logs()
-        log_df.to_csv('fairseq_batch_fwd_logs.csv')
-        bart.save_logs('fairseq_batch_fwd_logs.txt')
-        print(bart.summary)
+            bart(self.ids)
+        try:
+            log_df = bart.combine_logs()
+            log_df.to_csv('hf_batch_fwd_logs.csv')
+            bart.save_logs('hf_batch_fwd_logs.txt')
+            print(bart.summary)
+        except AttributeError as e:
+            print(e)
+
 
 
 class TestFairseq(unittest.TestCase):
