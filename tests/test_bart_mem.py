@@ -25,6 +25,7 @@ def save_logs_print_mem(bart, save_path):
         print(bart.summary)
     except AttributeError as e:
         r2 = LoggingMixin.collect_log_data(verbose=True)
+    print(f'*** DONE ***')
 
 class Memtest(unittest.TestCase):
 
@@ -88,7 +89,6 @@ class TestFairseq(Memtest):
     def test_fairseq_fwd_batch(self):
 
         bart = self.model
-        bart.reset_logs()
         with torch.no_grad():
             bart.model(self.ids, None, self.prev_output_tokens)
         save_logs_print_mem(bart, 'fairseq_fwd_batch.txt')
