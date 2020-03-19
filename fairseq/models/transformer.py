@@ -471,7 +471,7 @@ class TransformerEncoder(FairseqEncoder, LoggingMixin):
                 if return_all_hiddens:
                     assert encoder_states is not None
                     encoder_states.append(x)
-            self.log_mem(f'encoder: called layer {i}', verbose=True)
+            self.log_mem(f'encoder: called layer {i}')
         if self.layer_norm is not None:
             x = self.layer_norm(x)
             if return_all_hiddens:
