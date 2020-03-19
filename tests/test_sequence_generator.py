@@ -34,7 +34,7 @@ class TestBart(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         source_path = "test.source"
-        cls.lns = [" " + x.rstrip() for x in open(source_path).readlines()][:8]
+        cls.lns = [" " + x.rstrip() for x in open(source_path).readlines()][:6]
         tokenizer = BartTokenizer.from_pretrained('bart-large')
         dct = tokenizer.batch_encode_plus(cls.lns, max_length=1024, return_tensors="pt", pad_to_max_length=True)
         cls.ids = dct['input_ids'].to(DEFAULT_DEVICE)
@@ -50,7 +50,7 @@ class TestBart(unittest.TestCase):
         bart = self.model
         bart.reset_logs()
         with torch.no_grad():
-            bart(self.ids, None, self.prev_output_tokens)
+            bart.model(self.ids, None, self.prev_output_tokens)
         log_df = bart.combine_logs()
         log_df.to_csv('fairseq_batch_fwd_logs.csv')
         print(bart.summary)
