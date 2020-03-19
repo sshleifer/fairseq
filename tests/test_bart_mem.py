@@ -13,7 +13,17 @@ BARCA_ARTICLE = " Lionel Messi, Neymar and Luis Suarez is a star-studded strike 
 DEFAULT_DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 from transformers import BartTokenizer, BartModel, BartForConditionalGeneration
 from transformers.modeling_bart import shift_tokens_right
+from durbango.logging_utils import LoggingMixin
+import os
+SAVE_PREFIX =  os.getenv('SAVE_PATH', 'utest_')
 
+
+def save_logs_print_mem(bart, save_path):
+    try:
+        bart.save_logs(SAVE_PREFIX + save_path)
+        print(bart.summary)
+    except AttributeError as e:
+        r2 = LoggingMixin.collect_log_data(verbose=True)
 
 class TestHface(unittest.TestCase):
 
@@ -27,38 +37,30 @@ class TestHface(unittest.TestCase):
         cls.enc_mask = dct['attention_mask'].to(DEFAULT_DEVICE)
         cls.prev_output_tokens = shift_tokens_right(cls.ids, 1).to(DEFAULT_DEVICE)
         cls.model = BartForConditionalGeneration.from_pretrained('bart-large-cnn').to(DEFAULT_DEVICE)
-        #cls.lns = pickle_load('/Users/shleifer/transformers_fork/lns.pkl')
         return cls
 
     def test_hf_fwd_batch(self):
+        if hasattr(self.model, 'reset_logs'): self.model.reset_logs()
+        r1 = LoggingMixin.collect_log_data(verbose=True)
         bart = self.model
         if hasattr(bart, 'reset_logs'):
             bart.reset_logs()
 
         with torch.no_grad():
             bart(self.ids)
-        try:
-            log_df = bart.combine_logs()
-            log_df.to_csv('hf_batch_fwd_logs.csv')
-            bart.save_logs('hf_batch_fwd_logs.txt')
-            print(bart.summary)
-        except AttributeError as e:
-            print(e)
+        save_logs_print_mem(bart, 'hf_fwd_batch.txt')
 
     def test_hf_masked_fwd_batch(self):
+        if hasattr(self.model, 'reset_logs'): self.model.reset_logs()
         bart = self.model
-        if hasattr(bart, 'reset_logs'):
-            bart.reset_logs()
-
         with torch.no_grad():
             bart(self.ids, attention_mask=self.enc_mask)
-        try:
-            bart.save_logs('hf_masked_fwd_batch_logs.txt')
-            print('Masked Batch')
-            print(bart.summary)
-        except AttributeError as e:
-            print(e)
+        save_logs_print_mem(bart, 'hf_fwd_masked_batch.txt')
 
+    def test_hf_masked_generate(self):
+        self.model.generate(self.ids, attention_mask=self.enc_mask, num_beams=4, max_length=140, min_length=56,
+
+                            )
 
 
 class TestFairseq(unittest.TestCase):
