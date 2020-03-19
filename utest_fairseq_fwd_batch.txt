@@ -1,0 +1,148 @@
+BartModel: before encoder: GPU: 2.523GB CPU: 5.021GB
+encoder: called layer 0: GPU: 3.474GB CPU: 5.055GB
+encoder: called layer 1: GPU: 3.849GB CPU: 5.055GB
+encoder: called layer 2: GPU: 3.849GB CPU: 5.055GB
+encoder: called layer 3: GPU: 3.849GB CPU: 5.055GB
+encoder: called layer 4: GPU: 3.849GB CPU: 5.055GB
+encoder: called layer 5: GPU: 3.849GB CPU: 5.055GB
+encoder: called layer 6: GPU: 3.849GB CPU: 5.055GB
+encoder: called layer 7: GPU: 3.849GB CPU: 5.055GB
+encoder: called layer 8: GPU: 3.849GB CPU: 5.055GB
+encoder: called layer 9: GPU: 3.849GB CPU: 5.055GB
+encoder: called layer 10: GPU: 3.849GB CPU: 5.055GB
+encoder: called layer 11: GPU: 3.849GB CPU: 5.055GB
+BartModel: after encoder: GPU: 3.849GB CPU: 5.055GB
+Decoder: Before loop 0: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done with q proj: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done k,v proj: GPU: 3.849GB CPU: 5.055GB
+done reshaping: GPU: 3.849GB CPU: 5.055GB
+bart_attn: using key_padding_mask: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done masked fill: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done softmax: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done probs @v bmm: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done out_proj: GPU: 3.849GB CPU: 5.055GB
+Decoder: Before loop 1: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done with q proj: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done k,v proj: GPU: 3.849GB CPU: 5.055GB
+done reshaping: GPU: 3.849GB CPU: 5.055GB
+bart_attn: using key_padding_mask: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done masked fill: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done softmax: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done probs @v bmm: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done out_proj: GPU: 3.849GB CPU: 5.055GB
+Decoder: Before loop 2: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done with q proj: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done k,v proj: GPU: 3.849GB CPU: 5.055GB
+done reshaping: GPU: 3.849GB CPU: 5.055GB
+bart_attn: using key_padding_mask: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done masked fill: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done softmax: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done probs @v bmm: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done out_proj: GPU: 3.849GB CPU: 5.055GB
+Decoder: Before loop 3: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done with q proj: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done k,v proj: GPU: 3.849GB CPU: 5.055GB
+done reshaping: GPU: 3.849GB CPU: 5.055GB
+bart_attn: using key_padding_mask: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done masked fill: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done softmax: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done probs @v bmm: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done out_proj: GPU: 3.849GB CPU: 5.055GB
+Decoder: Before loop 4: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done with q proj: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done k,v proj: GPU: 3.849GB CPU: 5.055GB
+done reshaping: GPU: 3.849GB CPU: 5.055GB
+bart_attn: using key_padding_mask: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done masked fill: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done softmax: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done probs @v bmm: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done out_proj: GPU: 3.849GB CPU: 5.055GB
+Decoder: Before loop 5: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done with q proj: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done k,v proj: GPU: 3.849GB CPU: 5.055GB
+done reshaping: GPU: 3.849GB CPU: 5.055GB
+bart_attn: using key_padding_mask: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done masked fill: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done softmax: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done probs @v bmm: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done out_proj: GPU: 3.849GB CPU: 5.055GB
+Decoder: Before loop 6: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done with q proj: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done k,v proj: GPU: 3.849GB CPU: 5.055GB
+done reshaping: GPU: 3.849GB CPU: 5.055GB
+bart_attn: using key_padding_mask: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done masked fill: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done softmax: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done probs @v bmm: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done out_proj: GPU: 3.849GB CPU: 5.055GB
+Decoder: Before loop 7: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done with q proj: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done k,v proj: GPU: 3.849GB CPU: 5.055GB
+done reshaping: GPU: 3.849GB CPU: 5.055GB
+bart_attn: using key_padding_mask: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done masked fill: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done softmax: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done probs @v bmm: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done out_proj: GPU: 3.849GB CPU: 5.055GB
+Decoder: Before loop 8: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done with q proj: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done k,v proj: GPU: 3.849GB CPU: 5.055GB
+done reshaping: GPU: 3.849GB CPU: 5.055GB
+bart_attn: using key_padding_mask: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done masked fill: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done softmax: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done probs @v bmm: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done out_proj: GPU: 3.849GB CPU: 5.055GB
+Decoder: Before loop 9: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done with q proj: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done k,v proj: GPU: 3.849GB CPU: 5.055GB
+done reshaping: GPU: 3.849GB CPU: 5.055GB
+bart_attn: using key_padding_mask: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done masked fill: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done softmax: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done probs @v bmm: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done out_proj: GPU: 3.849GB CPU: 5.055GB
+Decoder: Before loop 10: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done with q proj: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done k,v proj: GPU: 3.849GB CPU: 5.055GB
+done reshaping: GPU: 3.849GB CPU: 5.055GB
+bart_attn: using key_padding_mask: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done masked fill: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done softmax: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done probs @v bmm: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done out_proj: GPU: 3.849GB CPU: 5.055GB
+Decoder: Before loop 11: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done with q proj: GPU: 3.849GB CPU: 5.055GB
+encoderAttn: done k,v proj: GPU: 3.849GB CPU: 5.055GB
+done reshaping: GPU: 3.849GB CPU: 5.055GB
+bart_attn: using key_padding_mask: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done masked fill: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done view: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done softmax: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done probs @v bmm: GPU: 3.849GB CPU: 5.055GB
+	bart_attn: done out_proj: GPU: 3.849GB CPU: 5.055GB
+Decoder: Done loop: GPU: 3.849GB CPU: 5.055GB
+BartModel: after decoder: GPU: 5.002GB CPU: 5.055GB
