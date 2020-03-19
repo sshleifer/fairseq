@@ -5,6 +5,7 @@
 
 __all__ = ['pdb']
 __version__ = '0.9.0'
+print('Local init')
 
 import sys
 
