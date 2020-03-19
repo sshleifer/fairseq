@@ -65,7 +65,7 @@ class TestFairseq(unittest.TestCase):
         bart.save_logs('fairseq_batch_fwd_logs.txt')
         print(bart.summary)
 
-    def test_bart_gen_batch(self):
+    def test_fairseq_gen_batch(self):
 
         bart = self.model
         bart.reset_logs()
@@ -73,19 +73,7 @@ class TestFairseq(unittest.TestCase):
         log_df = bart.combine_logs()
         log_df.to_csv('fairseq_batch_logs.csv')
 
-    def test_bart_extract_features(self):
-        bart = self.model
-        text = ' (CNN)The Palestinian Authority officially became the 123rd member of the International Criminal Court on Wednesday, a step that gives the court jurisdiction over alleged crimes in Palestinian'
-        tokens = bart.encode(text).unsqueeze(0).to(DEFAULT_DEVICE)
-        bart.reset_logs()
-        with self.assertRaises(Exception):
-            bart.combine_logs()
-        feat = bart.extract_features(tokens)
-        bart.log_mem('done')
-        log_df = bart.combine_logs()
-        log_df.to_csv('fairseq_extract_logs.csv')
-
-    def test_bart_generation(self):
+    def test_fairseq_generation(self):
         bart = self.model
         bart.reset_logs()
         with self.assertRaises(Exception):
