@@ -96,7 +96,6 @@ class TestFairseq(unittest.TestCase):
     def test_fairseq_fwd_batch(self):
 
         bart = self.model
-        import ipdb; ipdb.set_trace()
         with torch.no_grad():
             bart.model(self.ids, None, self.prev_output_tokens)
         save_logs_print_mem(bart, 'fairseq_fwd_batch.txt')
