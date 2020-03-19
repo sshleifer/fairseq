@@ -358,6 +358,7 @@ class MultiheadAttention(nn.Module, LoggingMixin):
             attn = attn.transpose(0, 1).contiguous().view(tgt_len, bsz, embed_dim)
         attn = self.out_proj(attn)
         self.log_mem('\tbart_attn: done out_proj')
+        import ipdb; ipdb.set_trace()
         attn_weights: Optional[Tensor] = None
         if need_weights:
             attn_weights = attn_weights_float.view(
