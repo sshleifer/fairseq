@@ -25,7 +25,15 @@ def save_logs_print_mem(bart, save_path):
     except AttributeError as e:
         r2 = LoggingMixin.collect_log_data(verbose=True)
 
-class TestHface(unittest.TestCase):
+class Memtest(unittest.TestCase):
+
+    def setUp(self):
+        if hasattr(self.model, 'reset_logs'): self.model.reset_logs()
+        r1 = LoggingMixin.collect_log_data(verbose=True)
+        torch.cuda.empty_cache()
+
+
+class TestHface(Memtest):
 
     @classmethod
     def setUpClass(cls):
@@ -38,10 +46,6 @@ class TestHface(unittest.TestCase):
         cls.prev_output_tokens = shift_tokens_right(cls.ids, 1).to(DEFAULT_DEVICE)
         cls.model = BartForConditionalGeneration.from_pretrained('bart-large-cnn').to(DEFAULT_DEVICE)
         return cls
-    def setUp(self):
-        if hasattr(self.model, 'reset_logs'): self.model.reset_logs()
-        r1 = LoggingMixin.collect_log_data(verbose=True)
-        torch.cuda.empty_cache()
 
     def test_hf_fwd_batch(self):
 
@@ -65,7 +69,7 @@ class TestHface(unittest.TestCase):
         save_logs_print_mem(self.model, 'hf_generate_masked_batch.txt')
 
 
-class TestFairseq(unittest.TestCase):
+class TestFairseq(Memtest):
 
     @classmethod
     def setUpClass(cls):
@@ -85,19 +89,19 @@ class TestFairseq(unittest.TestCase):
         bart.reset_logs()
         with torch.no_grad():
             bart.model(self.ids, None, self.prev_output_tokens)
-        log_df = bart.combine_logs()
-        log_df.to_csv('fairseq_batch_fwd_logs.csv')
-        bart.save_logs('fairseq_batch_fwd_logs.txt')
-        print(bart.summary)
+        save_logs_print_mem(bart, 'fairseq_fwd_batch.txt')
 
     def test_fairseq_gen_batch(self):
 
         bart = self.model
         bart.reset_logs()
         bart.sample(self.lns, beam=4, lenpen=2.0, max_len_b=140, min_len=55, no_repeat_ngram_size=3)
+        save_logs_print_mem(bart, 'fairseq_generate_batch.txt')
         log_df = bart.combine_logs()
         log_df.to_csv('fairseq_batch_logs.csv')
 
+
+    @unittest.skipUnless(False, 'redundant')
     def test_fairseq_generation(self):
         bart = self.model
         bart.reset_logs()
