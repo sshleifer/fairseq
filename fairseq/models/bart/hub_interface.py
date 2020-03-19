@@ -135,7 +135,7 @@ class BARTHubInterface(nn.Module, LoggingMixin):
         hypos = [v for _, v in sorted(zip(sample['id'].tolist(), hypos))]
         return hypos
 
-    def extract_features(self, tokens: torch.LongTensor, return_all_hiddens: bool = False) -> torch.Tensor:
+    def extract_features(self, tokens: torch.LongTensor, return_all_hiddens: bool = False, features_only=False) -> torch.Tensor:
         if tokens.dim() == 1:
             tokens = tokens.unsqueeze(0)
         if tokens.size(-1) > min(self.model.max_positions()):
@@ -155,7 +155,7 @@ class BARTHubInterface(nn.Module, LoggingMixin):
             src_tokens=tokens,
             src_lengths=None,
             prev_output_tokens=prev_output_tokens,
-            features_only=True,
+            features_only=features_only,
             return_all_hiddens=return_all_hiddens,
         )
         if return_all_hiddens:

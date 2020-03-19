@@ -43,14 +43,15 @@ class TestBart(unittest.TestCase):
         #cls.lns = pickle_load('/Users/shleifer/transformers_fork/lns.pkl')
         return cls
 
-    def test_bart_batch(self):
+    def test_bart_fwd_batch(self):
 
         bart = self.model
         bart.reset_logs()
         with torch.no_grad():
-            bart.extract_features(self.ids)
+            bart.extract_features(self.ids, features_only=False)
         log_df = bart.combine_logs()
         log_df.to_csv('fairseq_batch_fwd_logs.csv')
+        print(bart.summary)
 
     def test_bart_gen_batch(self):
 
