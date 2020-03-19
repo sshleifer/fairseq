@@ -31,7 +31,7 @@ class TestHface(unittest.TestCase):
 
     def test_hf_fwd_batch(self):
         bart = self.model
-        #bart.reset_logs()
+        bart.reset_logs()
         with torch.no_grad():
             bart(self.ids)
         try:
