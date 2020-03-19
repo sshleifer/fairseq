@@ -24,6 +24,7 @@ class TestHface(unittest.TestCase):
         tokenizer = BartTokenizer.from_pretrained('bart-large')
         dct = tokenizer.batch_encode_plus(cls.lns, max_length=1024, return_tensors="pt", pad_to_max_length=True)
         cls.ids = dct['input_ids'].to(DEFAULT_DEVICE)
+        cls.enc_mask = dct['attention_mask'].to(DEFAULT_DEVICE)
         cls.prev_output_tokens = shift_tokens_right(cls.ids, 1).to(DEFAULT_DEVICE)
         cls.model = BartModel.from_pretrained('bart-large').to(DEFAULT_DEVICE)
         #cls.lns = pickle_load('/Users/shleifer/transformers_fork/lns.pkl')
@@ -40,6 +41,20 @@ class TestHface(unittest.TestCase):
             log_df = bart.combine_logs()
             log_df.to_csv('hf_batch_fwd_logs.csv')
             bart.save_logs('hf_batch_fwd_logs.txt')
+            print(bart.summary)
+        except AttributeError as e:
+            print(e)
+
+    def test_hf_masked_fwd_batch(self):
+        bart = self.model
+        if hasattr(bart, 'reset_logs'):
+            bart.reset_logs()
+
+        with torch.no_grad():
+            bart(self.ids, attention_mask=self.enc_mask)
+        try:
+            bart.save_logs('hf_masked_fwd_batch_logs.txt')
+            print('Masked Batch')
             print(bart.summary)
         except AttributeError as e:
             print(e)
