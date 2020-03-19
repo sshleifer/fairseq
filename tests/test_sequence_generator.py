@@ -53,6 +53,7 @@ class TestBart(unittest.TestCase):
             bart.model(self.ids, None, self.prev_output_tokens)
         log_df = bart.combine_logs()
         log_df.to_csv('fairseq_batch_fwd_logs.csv')
+        bart.save_logs('fairseq_batch_fwd_logs.txt')
         print(bart.summary)
 
     def test_bart_gen_batch(self):
