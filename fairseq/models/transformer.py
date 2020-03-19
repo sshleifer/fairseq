@@ -778,7 +778,9 @@ class TransformerDecoder(FairseqIncrementalDecoder, LoggingMixin):
         # decoder layers
         attn: Optional[Tensor] = None
         inner_states: List[Optional[Tensor]] = [x]
+
         for idx, layer in enumerate(self.layers):
+            self.log_mem(f'Decoder: Before loop {idx}')
             encoder_state: Optional[Tensor] = None
             if encoder_out is not None:
                 if self.layer_wise_attention:
@@ -795,6 +797,7 @@ class TransformerDecoder(FairseqIncrementalDecoder, LoggingMixin):
 
             # add LayerDrop (see https://arxiv.org/abs/1909.11556 for description)
             dropout_probability = torch.empty(1).uniform_()
+
             if not self.training or (dropout_probability > self.decoder_layerdrop):
                 x, layer_attn, _ = layer(
                     x,
@@ -811,7 +814,7 @@ class TransformerDecoder(FairseqIncrementalDecoder, LoggingMixin):
                 inner_states.append(x)
                 if layer_attn is not None and idx == alignment_layer:
                     attn = layer_attn.float().to(x)
-
+        self.log_mem(f'Decoder: Done loop')
         if attn is not None:
             if alignment_heads is not None:
                 attn = attn[:alignment_heads]
