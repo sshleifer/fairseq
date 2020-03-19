@@ -72,7 +72,13 @@ class TestHface(Memtest):
         save_logs_print_mem(self.model, 'hf_generate_masked_batch.txt')
 
 
-class TestFairseq(Memtest):
+class TestFairseq(unittest.TestCase):
+    def setUp(self):
+        if hasattr(self.model, 'reset_logs'): self.model.reset_logs()
+        else:
+            self.model.model.reset_logs()
+        r1 = LoggingMixin.collect_log_data(verbose=True)
+        torch.cuda.empty_cache()
 
     @classmethod
     def setUpClass(cls):
@@ -89,6 +95,7 @@ class TestFairseq(Memtest):
     def test_fairseq_fwd_batch(self):
 
         bart = self.model
+        import ipdb; ipdb.set_trace()
         with torch.no_grad():
             bart.model(self.ids, None, self.prev_output_tokens)
         save_logs_print_mem(bart, 'fairseq_fwd_batch.txt')
