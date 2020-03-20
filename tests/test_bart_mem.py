@@ -16,7 +16,7 @@ from transformers import BartTokenizer, BartModel, BartForConditionalGeneration
 from transformers.modeling_bart import shift_tokens_right
 from durbango.logging_utils import LoggingMixin
 import os
-SAVE_PREFIX =  os.getenv('SAVE_PATH', 'utest_')
+SAVE_PREFIX =  os.getenv('SAVE_PREFIX', 'utest_')
 
 
 def save_logs_print_mem(bart, save_path):
@@ -78,13 +78,7 @@ class TestHface(Memtest):
 
 
 
-class TestFairseq(unittest.TestCase):
-    def setUp(self):
-        if hasattr(self.model, 'reset_logs'): self.model.reset_logs()
-        else:
-            self.model.model.reset_logs()
-        r1 = LoggingMixin.collect_log_data(verbose=True)
-        torch.cuda.empty_cache()
+class TestFairseq(Memtest):
 
     @classmethod
     def setUpClass(cls):
@@ -98,47 +92,18 @@ class TestFairseq(unittest.TestCase):
         #cls.lns = pickle_load('/Users/shleifer/transformers_fork/lns.pkl')
         return cls
 
-    def test_fairseq_fwd_batch(self):
-
+    def test_fs_fwd(self):
         bart = self.model
         with torch.no_grad():
             bart.model(self.ids, None, self.prev_output_tokens)
         save_logs_print_mem(bart, 'fs_fwd')
 
-    def test_fairseq_short_gen_batch(self):
+    def test_fs_short_gen(self):
         bart = self.model
         bart.sample(self.lns, beam=4, lenpen=2.0, max_len_b=7, min_len=5, no_repeat_ngram_size=3)
         save_logs_print_mem(bart, 'fs_short_generate')
 
-    def test_fairseq_gen_batch(self):
+    def test_fs_gen(self):
         bart = self.model
         bart.sample(self.lns, beam=4, lenpen=2.0, max_len_b=140, min_len=55, no_repeat_ngram_size=3)
         save_logs_print_mem(bart, 'fs_generate')
-
-    @unittest.skipUnless(False, 'redundant')
-    def test_fairseq_generation(self):
-        bart = self.model
-        bart.reset_logs()
-        with self.assertRaises(Exception):
-            bart.combine_logs()
-        text = ' (CNN)The Palestinian Authority officially became the 123rd member of the International Criminal Court on Wednesday, a step that gives the court jurisdiction over alleged crimes in Palestinian'
-        #tokens = bart.encode(text).unsqueeze(0).to(DEFAULT_DEVICE)
-        #gen_default = bart.generate(tokens, max_len_b=20, beam=4)
-
-        #gen_text = [bart.decode(g['tokens']) for g in gen_default]
-        gen_text = bart.sample([text], beam=4, lenpen=2.0, max_len_b=5, min_len=4,
-                                       no_repeat_ngram_size=3)
-        bart.log_mem('done')
-        print(gen_text)
-        log_df = bart.combine_logs()
-        log_df.to_csv('fairseq_generate_logs.csv')
-
-
-
-    def run_example(self, example):
-        bart = self.model
-        hypotheses_batch = bart.sample(example, beam=4,
-                                       lenpen=2.0, max_len_b=140,
-                                       min_len=55, no_repeat_ngram_size=3)
-
-        print(hypotheses_batch)
