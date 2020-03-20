@@ -20,9 +20,11 @@ SAVE_PREFIX =  os.getenv('SAVE_PATH', 'utest_')
 
 
 def save_logs_print_mem(bart, save_path):
-    print(f'*** {save_path} ***')
+    pth = SAVE_PREFIX + save_path
+    print(f'*** {pth} ***')
     try:
-        bart.save_logs(SAVE_PREFIX + save_path)
+        bart.save_logs(pth+'.txt')
+        bart.save_log_csv(pth+'.csv')
         print(bart.summary)
     except AttributeError as e:
         r2 = LoggingMixin.collect_log_data(verbose=True)
@@ -32,7 +34,7 @@ class Memtest(unittest.TestCase):
 
     def setUp(self):
         if hasattr(self.model, 'reset_logs'): self.model.reset_logs()
-        r1 = LoggingMixin.collect_log_data(verbose=True)
+        #r1 = LoggingMixin.collect_log_data(verbose=True)
         torch.cuda.empty_cache()
 
 #class MixedInterface()
@@ -55,7 +57,7 @@ class TestHface(Memtest):
         bart = self.model
         with torch.no_grad():
             bart(self.ids, attention_mask=self.enc_mask)
-        save_logs_print_mem(bart, 'hf_fwd_masked_batch.txt')
+        save_logs_print_mem(bart, 'hf_fwd')
 
     def test_hf_masked_generate(self):
         self.model.generate(self.ids, attention_mask=self.enc_mask, num_beams=4, max_length=140, min_length=56,
@@ -63,7 +65,16 @@ class TestHface(Memtest):
                             early_stopping=True,
                             decoder_start_token_id=2,
                             )
-        save_logs_print_mem(self.model, 'hf_generate_masked_batch.txt')
+        save_logs_print_mem(self.model, 'hf_generate')
+
+    def test_hf_short_generate(self):
+        self.model.generate(self.ids, attention_mask=self.enc_mask, num_beams=4, max_length=140, min_length=56,
+                            no_repeat_ngram_size=3,
+                            early_stopping=True,
+                            decoder_start_token_id=2,
+                            )
+        save_logs_print_mem(self.model, 'hf_short_generate')
+
 
 
 class TestFairseq(unittest.TestCase):
@@ -91,12 +102,17 @@ class TestFairseq(unittest.TestCase):
         bart = self.model
         with torch.no_grad():
             bart.model(self.ids, None, self.prev_output_tokens)
-        save_logs_print_mem(bart, 'fairseq_fwd_batch.txt')
+        save_logs_print_mem(bart, 'fs_fwd')
+
+    def test_fairseq_short_gen_batch(self):
+        bart = self.model
+        bart.sample(self.lns, beam=4, lenpen=2.0, max_len_b=7, min_len=5, no_repeat_ngram_size=3)
+        save_logs_print_mem(bart, 'fs_short_generate')
 
     def test_fairseq_gen_batch(self):
         bart = self.model
         bart.sample(self.lns, beam=4, lenpen=2.0, max_len_b=140, min_len=55, no_repeat_ngram_size=3)
-        save_logs_print_mem(bart, 'fairseq_generate_batch.txt')
+        save_logs_print_mem(bart, 'fs_generate')
 
     @unittest.skipUnless(False, 'redundant')
     def test_fairseq_generation(self):
