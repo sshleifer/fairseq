@@ -139,37 +139,37 @@ class MultiheadAttention(nn.Module, LoggingMixin):
         assert embed_dim == self.embed_dim
         assert list(query.size()) == [tgt_len, bsz, embed_dim]
 
-        if (
-            self.enable_torch_version
-            and not self.onnx_trace
-            and incremental_state is None
-            and not static_kv
-        ):
-            self.log_mem('calling F.multi_head_attention_forward')
-            assert key is not None and value is not None
-            return F.multi_head_attention_forward(
-                query,
-                key,
-                value,
-                self.embed_dim,
-                self.num_heads,
-                torch.empty([0]),
-                torch.cat((self.q_proj.bias, self.k_proj.bias, self.v_proj.bias)),
-                self.bias_k,
-                self.bias_v,
-                self.add_zero_attn,
-                self.dropout,
-                self.out_proj.weight,
-                self.out_proj.bias,
-                self.training,
-                key_padding_mask,
-                need_weights,
-                attn_mask,
-                use_separate_proj_weight=True,
-                q_proj_weight=self.q_proj.weight,
-                k_proj_weight=self.k_proj.weight,
-                v_proj_weight=self.v_proj.weight,
-            )
+        # if (
+        #     self.enable_torch_version
+        #     and not self.onnx_trace
+        #     and incremental_state is None
+        #     and not static_kv
+        # ):
+        #     #self.log_mem('calling F.multi_head_attention_forward')
+        #     assert key is not None and value is not None
+        #     return F.multi_head_attention_forward(
+        #         query,
+        #         key,
+        #         value,
+        #         self.embed_dim,
+        #         self.num_heads,
+        #         torch.empty([0]),
+        #         torch.cat((self.q_proj.bias, self.k_proj.bias, self.v_proj.bias)),
+        #         self.bias_k,
+        #         self.bias_v,
+        #         self.add_zero_attn,
+        #         self.dropout,
+        #         self.out_proj.weight,
+        #         self.out_proj.bias,
+        #         self.training,
+        #         key_padding_mask,
+        #         need_weights,
+        #         attn_mask,
+        #         use_separate_proj_weight=True,
+        #         q_proj_weight=self.q_proj.weight,
+        #         k_proj_weight=self.k_proj.weight,
+        #         v_proj_weight=self.v_proj.weight,
+        #     )
 
         if incremental_state is not None:
             saved_state = self._get_input_buffer(incremental_state)
