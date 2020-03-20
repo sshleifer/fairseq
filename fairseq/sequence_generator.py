@@ -134,6 +134,7 @@ class SequenceGenerator(LoggingMixin):
         new_order = torch.arange(bsz).view(-1, 1).repeat(1, beam_size).view(-1)
         new_order = new_order.to(src_tokens.device).long()
         encoder_outs = model.reorder_encoder_out(encoder_outs, new_order)
+        self.model
 
         # initialize buffers
         scores = src_tokens.new(bsz * beam_size, max_len + 1).float().fill_(0)
@@ -259,7 +260,7 @@ class SequenceGenerator(LoggingMixin):
                     finished[sent] = True
                     newly_finished.append(unfin_idx)
             return newly_finished
-
+        self.model.models[0].log_mem(f'encoder_outputs.shape: {encoder_outs.shape}')
         reorder_state = None
         batch_idxs = None
         for step in range(max_len + 1):  # one extra step for EOS marker
@@ -503,7 +504,7 @@ class SequenceGenerator(LoggingMixin):
         return finalized
 
 
-class EnsembleModel(torch.nn.Module):
+class EnsembleModel(torch.nn.Module, LoggingMixin):
     """A wrapper around an ensemble of models."""
 
     def __init__(self, models):
