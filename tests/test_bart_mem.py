@@ -16,7 +16,7 @@ from transformers import BartTokenizer, BartModel, BartForConditionalGeneration
 from transformers.modeling_bart import shift_tokens_right
 from durbango.logging_utils import LoggingMixin
 import os
-SAVE_PREFIX =  os.getenv('SAVE_PREFIX', 'utest_')
+SAVE_PREFIX =  os.getenv('SAVE_PREFIX', '')
 
 
 def save_logs_print_mem(bart, save_path):
