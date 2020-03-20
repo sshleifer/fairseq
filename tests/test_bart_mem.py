@@ -68,7 +68,8 @@ class TestHface(Memtest):
         save_logs_print_mem(self.model, 'hf_generate')
 
     def test_hf_short_generate(self):
-        self.model.generate(self.ids, attention_mask=self.enc_mask, num_beams=4, max_length=140, min_length=56,
+        self.model.generate(self.ids, attention_mask=self.enc_mask, num_beams=4,
+                            max_length=9, min_length=6,
                             no_repeat_ngram_size=3,
                             early_stopping=True,
                             decoder_start_token_id=2,
