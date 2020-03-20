@@ -206,6 +206,7 @@ class MultiheadAttention(nn.Module, LoggingMixin):
             k = self.k_proj(key)
             v = self.v_proj(value)
         q *= self.scaling
+        import ipdb; ipdb.set_trace()
 
         if self.bias_k is not None:
             assert self.bias_v is not None
@@ -241,7 +242,7 @@ class MultiheadAttention(nn.Module, LoggingMixin):
                 .view(-1, bsz * self.num_heads, self.head_dim)
                 .transpose(0, 1)
             )
-        self.log_mem('done reshaping')
+        self.log_mem(f'\t done reshaping k,v ->, {k.shape}')
         if saved_state is not None:
             # saved states are stored with shape (bsz, num_heads, seq_len, head_dim)
             if "prev_key" in saved_state:
@@ -294,6 +295,7 @@ class MultiheadAttention(nn.Module, LoggingMixin):
             assert key_padding_mask.size(1) == src_len
 
         if self.add_zero_attn:
+            raise ValueError('add_zero_attn')
             assert v is not None
             src_len += 1
             k = torch.cat([k, k.new_zeros((k.size(0), 1) + k.size()[2:])], dim=1)
@@ -312,7 +314,7 @@ class MultiheadAttention(nn.Module, LoggingMixin):
                     ],
                     dim=1,
                 )
-
+        self.log_mem('\t attn: before BMM(q,k)')
         attn_weights = torch.bmm(q, k.transpose(1, 2))
         self.log_mem('\t attn: done BMM(q,k)')
         assert list(attn_weights.size()) == [bsz * self.num_heads, tgt_len, src_len]
