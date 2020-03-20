@@ -463,6 +463,7 @@ class TransformerEncoder(FairseqEncoder, LoggingMixin):
         encoder_states = [] if return_all_hiddens else None
 
         # encoder layers
+        self.log_mem(f'encoder: starting loop')
         for i, layer in enumerate(self.layers):
             # add LayerDrop (see https://arxiv.org/abs/1909.11556 for description)
             dropout_probability = torch.empty(1).uniform_()

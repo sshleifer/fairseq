@@ -145,6 +145,7 @@ class MultiheadAttention(nn.Module, LoggingMixin):
             and incremental_state is None
             and not static_kv
         ):
+            self.log_mem('calling F.multi_head_attention_forward')
             assert key is not None and value is not None
             return F.multi_head_attention_forward(
                 query,
@@ -279,6 +280,7 @@ class MultiheadAttention(nn.Module, LoggingMixin):
             # In this branch incremental_state is never None
             assert incremental_state is not None
             incremental_state = self._set_input_buffer(incremental_state, saved_state)
+            self.log_mem('\t attn: done layer_state')
         assert k is not None
         src_len = k.size(1)
 
@@ -312,6 +314,7 @@ class MultiheadAttention(nn.Module, LoggingMixin):
                 )
 
         attn_weights = torch.bmm(q, k.transpose(1, 2))
+        self.log_mem('\t attn: done BMM(q,k)')
         assert list(attn_weights.size()) == [bsz * self.num_heads, tgt_len, src_len]
 
         if attn_mask is not None:
