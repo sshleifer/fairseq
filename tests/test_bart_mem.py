@@ -59,7 +59,7 @@ class TestHface(Memtest):
             bart(self.ids, attention_mask=self.enc_mask)
         save_logs_print_mem(bart, 'hf_fwd')
 
-    def test_hf_masked_generate(self):
+    def test_hf_generate(self):
         self.model.generate(self.ids, attention_mask=self.enc_mask, num_beams=4, max_length=140, min_length=56,
                             no_repeat_ngram_size=3,
                             early_stopping=True,
