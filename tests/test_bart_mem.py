@@ -53,7 +53,7 @@ class TestHface(Memtest):
         cls.model = BartForConditionalGeneration.from_pretrained('bart-large-cnn').to(DEFAULT_DEVICE)
         return cls
 
-    def test_hf_masked_fwd_batch(self):
+    def test_hf_fwd(self):
         bart = self.model
         with torch.no_grad():
             bart(self.ids, attention_mask=self.enc_mask)
