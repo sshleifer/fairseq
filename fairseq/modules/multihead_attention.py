@@ -206,7 +206,6 @@ class MultiheadAttention(nn.Module, LoggingMixin):
             k = self.k_proj(key)
             v = self.v_proj(value)
         q *= self.scaling
-        import ipdb; ipdb.set_trace()
 
         if self.bias_k is not None:
             assert self.bias_v is not None
