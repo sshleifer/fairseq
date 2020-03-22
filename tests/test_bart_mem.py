@@ -39,7 +39,12 @@ class Memtest(unittest.TestCase):
 
 #class MixedInterface()
 
-class TestHface(Memtest):
+class TestHface(unittest.TestCase):
+
+    def setUp(self):
+        if hasattr(self.model, 'reset_logs'): self.model.reset_logs()
+        #r1 = LoggingMixin.collect_log_data(verbose=True)
+        torch.cuda.empty_cache()
 
     @classmethod
     def setUpClass(cls):
@@ -56,7 +61,7 @@ class TestHface(Memtest):
     def test_hf_fwd(self):
         bart = self.model
         with torch.no_grad():
-            bart(self.ids, attention_mask=self.enc_mask)
+            bart(self.ids, attention_mask=self.enc_mask, generation_mode=False)
         save_logs_print_mem(bart, 'hf_fwd')
 
     def test_hf_generate(self):
