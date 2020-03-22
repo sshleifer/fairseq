@@ -241,7 +241,6 @@ class MultiheadAttention(nn.Module, LoggingMixin):
                 .view(-1, bsz * self.num_heads, self.head_dim)
                 .transpose(0, 1)
             )
-        self.log_mem(f'\t done reshaping k,v ->, {k.shape}')
         if saved_state is not None:
             # saved states are stored with shape (bsz, num_heads, seq_len, head_dim)
             if "prev_key" in saved_state:
