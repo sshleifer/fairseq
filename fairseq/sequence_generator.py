@@ -259,7 +259,6 @@ class SequenceGenerator(LoggingMixin):
                     finished[sent] = True
                     newly_finished.append(unfin_idx)
             return newly_finished
-        self.model.models[0].log_mem(f'encoder_outputs.shape: {encoder_outs.shape}')
         reorder_state = None
         batch_idxs = None
         for step in range(max_len + 1):  # one extra step for EOS marker
