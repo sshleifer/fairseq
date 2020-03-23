@@ -55,7 +55,7 @@ class TestHface(unittest.TestCase):
         cls.ids = dct['input_ids'].to(DEFAULT_DEVICE)
         cls.enc_mask = dct['attention_mask'].to(DEFAULT_DEVICE)
         cls.prev_output_tokens = shift_tokens_right(cls.ids, 1).to(DEFAULT_DEVICE)
-        cls.model = BartForConditionalGeneration.from_pretrained('bart-large-cnn').to(DEFAULT_DEVICE)
+        cls.model = BartForConditionalGeneration.from_pretrained('bart-large-cnn').half().to(DEFAULT_DEVICE).half()
         return cls
 
     def test_hf_fwd(self):
@@ -93,7 +93,7 @@ class TestFairseq(Memtest):
         dct = tokenizer.batch_encode_plus(cls.lns, max_length=1024, return_tensors="pt", pad_to_max_length=True)
         cls.ids = dct['input_ids'].to(DEFAULT_DEVICE)
         cls.prev_output_tokens = shift_tokens_right(cls.ids, 1).to(DEFAULT_DEVICE)
-        cls.model = torch.hub.load('pytorch/fairseq', 'bart.large.cnn').eval().to(DEFAULT_DEVICE)
+        cls.model = torch.hub.load('pytorch/fairseq', 'bart.large.cnn').eval().half().to(DEFAULT_DEVICE)
         #cls.lns = pickle_load('/Users/shleifer/transformers_fork/lns.pkl')
         return cls
 
