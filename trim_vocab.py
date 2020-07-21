@@ -28,3 +28,8 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+#python trim_vocab.py --corpus_data $ENRO_DIR/*.spm* --output enro_trimmed/dict.txt
+
+"""Usage on brutasse
+python trim_vocab.py --corpus-data "/home/shleifer/transformers_fork/examples/seq2seq/dbart/wmt_en_ro/*spm*" --output enro_trimmed/dict.txt
+"""
