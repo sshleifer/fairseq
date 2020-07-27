@@ -179,6 +179,9 @@ def tpu_data_loader(args, itr):
 @metrics.aggregate("train")
 def train(args, trainer, task, epoch_itr):
     """Train the model for one epoch and return validation losses."""
+    from durbango import pickle_save
+    pickle_save(args, 'trainer_args_enro.pkl')
+    raise ValueError('saved args')
     logger.info("begin training epoch {}".format(epoch_itr.epoch))
 
     # Initialize data iterator
